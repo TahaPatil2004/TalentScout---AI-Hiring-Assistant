@@ -1,118 +1,101 @@
-# TalentScout - AI Hiring Assistant
+TalentScout - AI Hiring Assistant
+An intelligent Streamlit-based chatbot that streamlines the initial candidate screening process for TalentScout, a technology recruitment agency. The assistant uses Google Gemini AI to conduct structured, context-aware interviews and generates tailored technical questions based on candidates' declared tech stacks.
 
-An intelligent Streamlit-based chatbot that streamlines the initial candidate screening process for TalentScout, a technology recruitment agency. The assistant uses Google Gemini AI to conduct structured interviews and generate tailored technical questions based on candidates' tech stacks.
+🌟 Features
+Core Functionality
+Interactive Chat Interface: A clean and professional UI built with Streamlit for seamless candidate interaction.
 
-## 🎯 Features
+Systematic Information Gathering: Collects essential candidate details including full name, email, phone number, years of experience, desired positions, location, and tech stack.
 
-### Core Functionality
-- **Interactive Chat Interface**: Clean, professional Streamlit UI for seamless candidate interaction
-- **Systematic Information Gathering**: Collects essential candidate details including:
-  - Full Name
-  - Email Address  
-  - Phone Number
-  - Years of Experience
-  - Desired Position(s)
-  - Current Location
-  - Tech Stack & Skills
+Robust Input Validation: Implements strict checks for valid email formats, phone numbers, and rejects irrelevant or nonsensical answers (e.g., "nothing", "space") to maintain focus.
 
-### AI-Powered Capabilities
-- **Intelligent Conversation Flow**: Context-aware responses using Google Gemini AI
-- **Dynamic Question Generation**: Creates 3-5 tailored technical questions based on declared tech stack
-- **Smart Data Extraction**: AI-powered parsing of candidate responses
-- **Fallback Handling**: Graceful handling of unexpected inputs while maintaining focus
+AI-Powered Capabilities
+Intelligent Conversation Flow: Manages a multi-stage conversation using a state machine, ensuring a logical and coherent screening process.
 
-### Technical Features
-- **Data Validation**: Robust email and phone number validation with multiple format support
-- **Session Management**: Maintains conversation state and candidate data throughout the session
-- **Privacy Compliance**: Secure handling of sensitive information following data privacy best practices
-- **Professional UI**: Clean, responsive design with conversation history and progress tracking
+Dynamic Question Generation: Creates 3-5 tailored technical questions based on the candidate's declared tech stack and experience level using Google Gemini.
 
-## 🚀 Installation & Setup
+Sentiment Analysis: Gauges candidate sentiment (Positive, Neutral, Negative) from their responses to provide high-level emotional analytics.
 
-### Prerequisites
-- Python 3.8 or higher
-- Google Gemini API key
+Fallback Handling: Gracefully manages unexpected or misunderstood inputs by guiding the user back to the conversation's objective.
 
-### Local Setup
+🛠️ Technical Architecture
+Core Components
+app.py: The main entry point for the Streamlit application. It handles the user interface, session state management, and renders the chat conversation.
 
-1. **Clone or download the project files**
-   ```bash
-   # Ensure you have all project files in your working directory
-   ```
+hiring_assistant.py: The core AI engine of the chatbot. It manages the conversation state, integrates with the Google Gemini API, generates questions, and processes all user input.
 
-2. **Set up environment variables**
-   ```bash
-   # Set your Gemini API key
-   export GEMINI_API_KEY="your_gemini_api_key_here"
-   
-   # On Windows:
-   set GEMINI_API_KEY=your_gemini_api_key_here
-   ```
+data_validator.py: A utility module that provides robust data validation for user inputs like emails and phone numbers using regex, and sanitizes text to prevent security issues.
 
-3. **Install dependencies**
-   ```bash
-   pip install streamlit google-genai
-   ```
+AI Integration
+Model: The application utilizes Google's Gemini 1.5 Flash model, chosen for its balance of speed, intelligence, and cost-effectiveness.
 
-4. **Run the application**
-   ```bash
-   streamlit run app.py --server.port 5000
-   ```
+API Client: Interaction with the Gemini API is handled through the official google-generativeai Python library.
 
-5. **Access the application**
-   - Open your browser and navigate to `http://localhost:5000`
-   - The application will be ready for candidate interactions
+Security: The Gemini API key is managed securely using environment variables and the python-dotenv library, ensuring that secrets are never hard-coded.
 
-## 📖 Usage Guide
+🧠 Prompt Engineering
+The effectiveness of the chatbot relies on carefully crafted system prompts that guide the Gemini model's behavior.
 
-### For Candidates
-1. **Start Interview**: Click "Start Interview Process" to begin
-2. **Provide Information**: Follow the prompts to share your details:
-   - Personal information (name, email, phone)
-   - Professional background (experience, desired roles, location)
-   - Technical expertise (programming languages, frameworks, tools)
-3. **Answer Questions**: Respond to AI-generated technical questions
-4. **Complete Session**: Review your summary and next steps
+Question Generation: The prompt instructs the AI to act as an "expert technical interviewer" and to generate a specific number of practical questions that cover different aspects of a candidate's skills, such as coding, architecture, and best practices. It is also given the candidate's years of experience to tailor the difficulty of the questions.
 
-### For Recruiters
-- **Monitor Sessions**: View real-time candidate responses and progress
-- **Review Data**: Access comprehensive candidate summaries post-interview
-- **Next Steps**: Follow up with qualified candidates based on collected information
+Name Extraction: A highly specific prompt is used to extract a candidate's full name from their introductory message. It is instructed to return only the name or the word 'NONE', which makes the model's output predictable and easy to parse.
 
-## 🔧 Technical Architecture
+Sentiment Analysis: A concise prompt asks the model to analyze the sentiment of a candidate's response and return only a single keyword (POSITIVE, NEUTRAL, or NEGATIVE), ensuring a clean and consistent output for analytics.
 
-### Core Components
+🚀 Installation & Setup
+Prerequisites
+Python 3.11+
 
-**app.py** - Main Streamlit application
-- User interface and session management
-- Conversation flow control
-- Real-time chat display
+A valid Google Gemini API key.
 
-**hiring_assistant.py** - AI-powered conversation engine
-- Google Gemini AI integration
-- Conversation state management
-- Technical question generation
-- Context-aware response processing
+Local or Cloud-Based Setup (Recommended: GitHub Codespaces)
+Clone or upload the repository.
 
-**data_validator.py** - Input validation and sanitization
-- Email/phone format validation
-- Experience extraction
-- Data security and sanitization
+For a cloud environment, upload the project to a new GitHub repository.
 
-### AI Integration
-- **Model**: Google Gemini 2.5 Flash for optimal performance
-- **Question Generation**: Context-aware technical questions based on tech stack
-- **Data Extraction**: AI-powered parsing of natural language responses
-- **Conversation Management**: Maintains context throughout multi-stage interviews
+Set up the environment variable.
 
-### Data Handling
-- **Session State**: Streamlit session state for conversation persistence
-- **Data Privacy**: No persistent storage, memory-only processing
-- **Validation**: Multi-layer input validation and sanitization
-- **Security**: XSS prevention and input sanitization
+Create a file named .env in the root of the project directory.
 
-## 🎨 Prompt Engineering
+Add your Gemini API key to this file:
 
-### Core Prompts
+GEMINI_API_KEY="your-secret-api-key-here"
+Create a virtual environment and install dependencies.
 
-**Greeting & Context Setting**
+Bash
+
+# Create the environment
+python3 -m venv .venv
+
+# Activate the environment
+# On macOS/Linux:
+source .venv/bin/activate
+# On Windows:
+# .\.venv\Scripts\activate
+
+# Install required packages
+pip install streamlit google-generativeai python-dotenv
+Run the application.
+
+Bash
+
+streamlit run app.py --server.port 8000
+Access the application.
+
+Open your browser and navigate to http://127.0.0.1:8000 or the URL provided by your cloud environment.
+
+💡 Challenges & Solutions
+During development, a significant challenge arose where the application failed to run on a local Windows machine, throwing persistent ImportError and permission errors despite the environment being correctly configured.
+
+Challenge: The local development environment was fundamentally broken, preventing the Streamlit server from correctly recognizing its own installed packages. This is a common but difficult issue related to system PATHs, conflicting Python installations, and security software interference.
+
+Solution: To overcome this, the project was moved to GitHub Codespaces. This provided a clean, standardized, and containerized Linux environment that completely bypassed the local machine's issues. This approach not only solved the problem but also improved development efficiency and ensured reproducibility, demonstrating a practical solution to common environment-related development obstacles.
+
+📖 Usage Guide
+Start Interview: Launch the application and click the "Start Interview Process" button.
+
+Provide Information: Follow the chatbot's prompts to provide your personal details, professional background, and technical skills.
+
+Answer Technical Questions: Respond to the 3-5 technical questions generated by the AI based on your tech stack.
+
+Complete Session: Once all questions are answered, the conversation will conclude, and a summary of your interview will be displayed.
